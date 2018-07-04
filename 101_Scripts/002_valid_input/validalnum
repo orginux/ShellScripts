@@ -20,10 +20,10 @@ validAlphaNum()
 # read input
 
 # if ! validAlphaNum "$input" ; then 
-#    echo "Only numbers" >&2
+#    echo "Only letters numbers" >&2
 #    exit 1
 # else 
-#     echo "Input valid"
+#     echo "Input is valid"
 # fi
 
 # exit 0
