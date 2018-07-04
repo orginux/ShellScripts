@@ -26,17 +26,18 @@ if [ $# -ne 3 ] ; then
     exit 1
 fi
 
-
+# короткий год
 if [ $3 -le 99 ] ; then 
     echo "$0: expected 4-digit year value" >&2
     exit 1
 fi
 
 # удаляет цифры и проверяет на пустую строку 
-if [ -z $(echo $1 | sed 's/[[ :digit: ]]//g ') ] ; then 
+if [ -z $(echo $1 | sed 's/[[:digit:]]//g') ]; then
+
     monthNumToName $1
 else 
-    month="$( echo $1 | cut -c1 | tr '[:lower:]' '[:upper:]')" # первый символ в верхний регистр
+    month="$(echo $1 | cut -c1 | tr '[:lower:]' '[:upper:]')" # первый символ в верхний регистр
     month="$month$(echo $1 | cut -c2-3 | tr '[:upper:]' '[:lower:]' )" # остальные 2 - в нижний
 
 fi
