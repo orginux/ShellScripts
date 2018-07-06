@@ -19,13 +19,13 @@ nicenumber()
     thousands=$integer
 
     while [ $thousands -gt 999 ]; do
-        remainder=$(($thousands % 1000)) 
-        while [ ${#remainder} -lt 3 ] ; do
-            remainder="0$remainder"
+        remainder=$(($thousands % 1000)) # три последние значимые цифры
+        while [ ${#remainder} -lt 3 ] ; do # если меньше трех знаков -
+            remainder="0$remainder"        # - добавляем вперёд нули 
         done
 
-        result="${TD:=","}${remainder}${result}"
-        thousands=$(($thousands / 1000))
+        result="${TD:=","}${remainder}${result}" # собрать справа налево
+        thousands=$(($thousands / 1000))         # остаток, если есть
     done
 
     nicenum="${thousands}${result}"
