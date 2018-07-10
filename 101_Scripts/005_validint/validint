@@ -1,9 +1,53 @@
 #!/bin/bash
-validind()
+
+# Сравнивает $1 с минимальным $2 и/или с максимальным $3
+ 
+validint()
 {
     number="$1"; min="$2"; max="$3"
+
     if [ -z $number ]; then
         echo "Please enter a number." >%2
         return 1
     fi
+
+    # Проверка является ли первый зимвол знком 'минус' 
+    if [ "${number%${number#?}}" = "-" ] ; then
+        testvalue="${number#?}" # Все, кроме первого символа
+    else 
+        testvalue="$number"
+    fi
+
+    # Удалить все цифры
+    nodigits="$(echo $testvalue | sed 's/[[:digit:]]//g')" 
+
+    # Проверка наличия нецифровых символов
+    if [ ! -z $nodigits ] ; then
+        echo "Invalid number format" >&2
+        return 1
+    fi
+
+    # Значение должно быть больше минимального
+    if [ ! -z $min ] ; then
+        if [ "$number" -lt "$min" ] ; then
+            echo " Your value  is too small " >&2
+            return 1
+        fi
+    fi
+
+    # Значение должно быть меньше максимального
+    if [ ! -z $max ] ; then 
+        if [ "$number" -gt "$max" ] ; then
+            echo "Your  value is too big " >&2
+            return 1 
+        fi
+    fi
+
+    return 0
 }
+
+  # Проверка ввода
+if validint "$1" "$2" "$3" ; then
+    echo "Input is a valid integer within your constraints."
+fi
+
