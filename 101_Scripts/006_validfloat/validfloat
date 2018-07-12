@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Для прверки вещственного числла разбивает его на 2 части: целую и дробную
+# Целая часть проверяется как обычное число
+# Дробная - как положительное целое
+
+# Подключение дугого сценария
+. .//005_validint/validint
+
+validfloat()
+{
+    fvalue=$1
+
+    # Проверка наличия десятичной точки
+    if [ ! -z $(echo $fvalue | sed 's/[^.]//g') ] ; then
+
+        # Извлечь целую часть
+         decimalPart="$( echo $fvalue | cut -d. -f1)"
+
+        # Извлечь дробную часть
+        fractionalPart="${fvalue#*\.}"
+        
+        # Проверка целой части
+        if [ ! -z $decimalPart ] ; then
+            # Если НЕ допустимое целое цисло
+            if ! validint "$decimalPart" "" "" ; then
+                return 1
+            fi
+        fi
+
+        # Проверка дробной части
+        # Дробная часть не должна содержать "-"
+        if [ "${fractionalPart%${fractionalPart#?}}" = "-" ] ; then
+            echo "Invalid floating-point number: '-' not allowed after decimal point." >&2
+            return 1
+        fi
+        
+        if [ "$fractionalPart" != "" ] ; then
+            # Если дробная часть НЕ допустимое число
+            if ! validint "$fractionalPart" "0" ""; then
+                return 1
+            fi
+        fi
+
+    else
+        if [ "$fvalue" = "-" ]; then
+            echo "Ivalid floating format" >&2
+            return 1
+        fi
+
+        if ! validint "$fvalue" "" "" ; then
+            return 1
+        fi
+    fi
+
+    return 0
+
+}
+
+# Разкоментировать для запуска
+###############################
+#if validfloat $1 ; then
+#    echo "$1 is a valid floating-point value."
+#fi
+#exit 0
+#
