@@ -26,6 +26,7 @@ exceedsDaysInMonth()
 
 isLeapYear()
 {
+    # Возвращает 0 если количество дней в году 366 , иначе -- 1
     year=$1
     if [ "$(date -d 12/31/$year +%j)" -ne 366 ] ; then
         return 1
