@@ -1,8 +1,5 @@
 #!/bin/bash
-
-# validdate проверят дату с учетом высокосных лет
-
-normdate="путь к 003-normdate "
+normdate="полный путь к 003_normdate"
 
 exceedsDaysInMonth()
 {
@@ -29,24 +26,13 @@ exceedsDaysInMonth()
 
 isLeapYear()
 {
-    # Эта функция возвращает 0, если указанный год является високосным; иначе возвращается 1.
-
-     # Правила проверки високосного года:
-     #1. Если год не делится на 4, значит, он не високосный.
-     #2. Если год делится на 4 и на 400, значит, он високосный.
-     #3. Если год делится на 4, не делится на 400 и делится на 100, значит, он не високосный.
-     #4. Любой другой год, который делится на 4, является високосным.
-
     year=$1
-    if [ "$((year % 4))" - ne 0 ] ; then
-        return 1 # Не високосныйй год
-    elif [ "$((year % 400))" -eq 0 ] ; then
-        return 0 # Год високосный
-    elif [ "$((year % 100))" -eq 0] ; then
+    if [ "$(date -d 12/31/$year +%j)" -ne 366 ] ; then
         return 1
     else 
-        return 0    
+        return 0
     fi
+
 }
 
 # Начало скрипта
@@ -76,7 +62,7 @@ fi
 # После нормализации данных проверить допустимость числа месяца
 
 if ! exceedsDaysInMonth $month "$2" ; then
-    if [ "$month" = "Feb" -a "$2" - eq "29" ] ; then
+    if [ "$month" = "Feb" -a "$2" -eq "29" ] ; then
         if ! isLeapYear $3 ; then
             echo "$0: $3 is not a leap year, so Feb doesn't have 29 days." >&2
             exit 1
@@ -89,4 +75,3 @@ fi
 
 echo "Valid date: $newdate"
 exit 0
-
