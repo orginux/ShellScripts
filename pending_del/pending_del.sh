@@ -5,7 +5,7 @@
 ##          Проверяет с указанным интервалом           ##
 #########################################################
 
-current=$(ls -l | wc -l )
+current=$(find -type f | wc -l )
 echo "Сейчас файлов в директории: $current"
 
 echo -n "Должно остаться файлов: "
@@ -16,7 +16,7 @@ read t
 
 while [ $current -gt $limit ]
 do
-    current=$(ls -l | wc -l )
+    current=$(find -type f | wc -l )
     echo "Осталось: $current"
     sleep $t
 done
